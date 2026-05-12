@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Invar Chrysos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <nav class="bg-white shadow p-6">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-bold">Invar Chrysos - Admin Dashboard</h1>
+      <a href="index.html" class="text-red-600 font-medium">Logout</a>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-white p-6 rounded-3xl shadow">Total Applications: <span class="text-4xl font-bold text-amber-600">24</span></div>
+      <div class="bg-white p-6 rounded-3xl shadow">Pending: <span class="text-4xl font-bold text-orange-600">8</span></div>
+      <div class="bg-white p-6 rounded-3xl shadow">Disbursed: <span class="text-4xl font-bold text-green-600">12</span></div>
+    </div>
+
+    <h2 class="text-2xl font-bold mb-6">Recent Applications</h2>
+    <div class="bg-white rounded-3xl shadow overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="p-4 text-left">Name</th>
+            <th class="p-4 text-left">Amount</th>
+            <th class="p-4 text-left">Date</th>
+            <th class="p-4 text-left">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-t"><td class="p-4">John Smith</td><td class="p-4">BWP 5,000</td><td class="p-4">Today</td><td class="p-4 text-green-600">Approved</td></tr>
+          <tr class="border-t"><td class="p-4">Sarah Molefi</td><td class="p-4">BWP 3,500</td><td class="p-4">Yesterday</td><td class="p-4 text-orange-600">Pending</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
