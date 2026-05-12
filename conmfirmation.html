@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Success - Invar Chrysos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+  <div class="text-center bg-white rounded-3xl shadow-2xl p-12 max-w-md">
+    <h1 class="text-6xl mb-6">✅</h1>
+    <h2 class="text-4xl font-bold mb-4">Thank You!</h2>
+    <p class="text-xl text-gray-600 mb-8">Your loan application has been received.</p>
+    <p class="font-mono text-3xl text-amber-600 mb-8" id="ref">INV-123456</p>
+    <a href="index.html" class="inline-block bg-amber-600 text-white px-10 py-4 rounded-2xl font-semibold">Return to Home</a>
+  </div>
+  <script>
+    document.getElementById("ref").textContent = "INV-" + Math.floor(100000 + Math.random() * 900000);
+  </script>
+</body>
+</html>
