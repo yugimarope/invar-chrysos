@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Agreement - Invar Chrysos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <nav class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-amber-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold">IC</div>
+        <h1 class="text-3xl font-bold">Invar Chrysos</h1>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-4xl mx-auto p-8">
+    <h1 class="text-4xl font-bold mb-6 text-center">Loan Agreement - Invar Chrysos</h1>
+    
+    <div class="bg-white border rounded-3xl p-8 h-[65vh] overflow-y-auto prose text-gray-700 leading-relaxed">
+      <h2 class="text-2xl font-bold">LOAN AGREEMENT</h2>
+      <p><strong>Between Invar Chrysos (Lender) and the Borrower</strong></p>
+      
+      <!-- Paste the full Loan Agreement here -->
+      <p>1. Loan Details: The Lender agrees to advance the Principal Amount...</p>
+      <p>2. Interest: 20% flat rate for the agreed period...</p>
+      <p>3. Penalty Interest on default...</p>
+      <p>4. AML/FIA Compliance &amp; Consents...</p>
+      <p><em>Paste the complete detailed agreement we created earlier in this section.</em></p>
+    </div>
+
+    <div class="mt-8 bg-amber-50 p-6 rounded-2xl">
+      <label class="flex items-start gap-3 cursor-pointer">
+        <input type="checkbox" id="accept" class="mt-1 w-5 h-5">
+        <span class="text-sm">I have read and fully agree to all terms and conditions of the Loan Agreement above.</span>
+      </label>
+    </div>
+
+    <button onclick="submitApplication()" id="submitBtn" disabled 
+            class="mt-8 w-full bg-green-600 hover:bg-green-700 text-white py-6 rounded-3xl text-xl font-bold">
+      Accept Agreement &amp; Submit Application
+    </button>
+  </div>
+
+  <script>
+    document.getElementById('accept').addEventListener('change', function() {
+      document.getElementById('submitBtn').disabled = !this.checked;
+    });
+    function submitApplication() {
+      alert("✅ Application Submitted Successfully!");
+      window.location.href = 'confirmation.html';
+    }
+  </script>
+</body>
+</html>
