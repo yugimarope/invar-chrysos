@@ -3,68 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Invar Chrysos</title>
+  <title>Apply for Loan - Invar Chrysos</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-gray-100">
-  <nav class="bg-white shadow p-6">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <h1 class="text-3xl font-bold">Invar Chrysos - Admin Dashboard</h1>
-      <a href="index.html" class="text-red-600 font-medium">Logout</a>
+<body class="bg-gray-50">
+  <nav class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-amber-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold">IC</div>
+        <h1 class="text-3xl font-bold">Invar Chrysos</h1>
+      </div>
+      <a href="index.html" class="text-gray-600 hover:text-black">← Home</a>
     </div>
   </nav>
 
-  <div class="max-w-7xl mx-auto px-6 py-8">
-    <h2 class="text-2xl font-bold mb-6">All Loan Applications</h2>
-    <div id="applicationsList" class="bg-white rounded-3xl shadow overflow-hidden"></div>
+  <div class="max-w-2xl mx-auto mt-12 bg-white rounded-3xl shadow-2xl p-10">
+    <h1 class="text-4xl font-bold text-center mb-8">Loan Application</h1>
+    
+    <form id="loanForm">
+      <div class="grid grid-cols-2 gap-6">
+        <div><label class="block mb-1 font-medium">Full Name</label><input type="text" id="fullName" class="w-full border rounded-xl p-4" required></div>
+        <div><label class="block mb-1 font-medium">ID / Omang No.</label><input type="text" id="idNumber" class="w-full border rounded-xl p-4" required></div>
+      </div>
+      <div class="mt-6"><label class="block mb-1 font-medium">Phone Number</label><input type="tel" id="phone" class="w-full border rounded-xl p-4" required></div>
+      <div class="mt-6"><label class="block mb-1 font-medium">Loan Amount (BWP)</label><input type="number" id="amount" class="w-full border rounded-xl p-4" required></div>
+      <div class="mt-6"><label class="block mb-1 font-medium">Purpose of Loan</label><textarea id="purpose" class="w-full border rounded-xl p-4 h-32" required></textarea></div>
+      
+      <button type="submit" class="mt-10 w-full bg-amber-600 hover:bg-amber-700 text-white py-5 rounded-2xl text-xl font-semibold">
+        Submit Application
+      </button>
+    </form>
   </div>
 
   <script>
-    // Supabase Configuration
     const supabaseUrl = 'https://woimqhzsxyfwqtstomez.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvaW1xaHpzeHlmd3F0c3RvbWV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MzMwMjUsImV4cCI6MjA5NDIwOTAyNX0.iMhEYmOsIkpNeDhS4q1NpgdQT-xm4ZUz2Ibd8R3yVHU';
 
     const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
 
-    async function loadApplications() {
-      const { data, error } = await supabase
-        .from('loan_applications')
-        .select('*')
-        .order('created_at', { ascending: false });
+    document.getElementById('loanForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-      let html = `<table class="w-full"><thead class="bg-gray-50"><tr>
-        <th class="p-4 text-left">Name</th>
-        <th class="p-4 text-left">ID No.</th>
-        <th class="p-4 text-left">Amount</th>
-        <th class="p-4 text-left">Date</th>
-        <th class="p-4 text-left">Status</th>
-      </tr></thead><tbody>`;
+      const application = {
+        full_name: document.getElementById('fullName').value.trim(),
+        id_number: document.getElementById('idNumber').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        amount: parseFloat(document.getElementById('amount').value),
+        purpose: document.getElementById('purpose').value.trim(),
+        reference: "INV-" + Math.floor(100000 + Math.random() * 900000)
+      };
 
-      if (data && data.length > 0) {
-        data.forEach(app => {
-          html += `<tr class="border-t hover:bg-gray-50">
-            <td class="p-4">${app.full_name}</td>
-            <td class="p-4">${app.id_number}</td>
-            <td class="p-4 font-medium">BWP ${app.amount}</td>
-            <td class="p-4">${new Date(app.created_at).toLocaleDateString()}</td>
-            <td class="p-4">
-              <span class="px-4 py-1 rounded-full text-sm ${app.status === 'Pending' ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'}">
-                ${app.status || 'Pending'}
-              </span>
-            </td>
-          </tr>`;
-        });
+      const { error } = await supabase.from('loan_applications').insert([application]);
+
+      if (error) {
+        alert("Error: " + error.message);
       } else {
-        html += `<tr><td colspan="5" class="p-12 text-center text-gray-500">No applications yet.</td></tr>`;
+        alert(`✅ Success!\nReference Number: ${application.reference}`);
+        window.location.href = 'confirmation.html';
       }
-
-      html += `</tbody></table>`;
-      document.getElementById('applicationsList').innerHTML = html;
-    }
-
-    // Load data when page loads
-    loadApplications();
+    });
   </script>
 </body>
 </html>
