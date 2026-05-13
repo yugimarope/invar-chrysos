@@ -14,7 +14,7 @@
         <div class="w-11 h-11 bg-amber-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold">IC</div>
         <h1 class="text-3xl font-bold">Invar Chrysos</h1>
       </div>
-      <a href="index.html" class="text-gray-600 hover:text-black">← Home</a>
+      <a href="index.html" class="text-gray-600">← Home</a>
     </div>
   </nav>
 
@@ -42,7 +42,7 @@
 
     const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
 
-    document.getElementById('loanForm').addEventListener('submit', async function(e) {
+    document.getElementById('loanForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const application = {
@@ -51,16 +51,15 @@
         phone: document.getElementById('phone').value.trim(),
         amount: parseFloat(document.getElementById('amount').value),
         purpose: document.getElementById('purpose').value.trim(),
-        reference: "INV-" + Math.floor(100000 + Math.random() * 900000)
       };
 
       const { error } = await supabase.from('loan_applications').insert([application]);
 
       if (error) {
-        alert("Error: " + error.message);
+        alert("Submission failed: " + error.message);
       } else {
-        alert(`✅ Success!\nReference Number: ${application.reference}`);
-        window.location.href = 'confirmation.html';
+        alert("✅ Application Submitted Successfully!");
+        window.location.href = "confirmation.html";
       }
     });
   </script>
