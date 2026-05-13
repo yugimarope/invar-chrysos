@@ -5,41 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard - Invar Chrysos</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-gray-100">
   <nav class="bg-white shadow p-6">
-    <div class="max-w-7xl mx-auto flex justify-between">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
       <h1 class="text-3xl font-bold">Invar Chrysos - Admin Dashboard</h1>
-      <a href="index.html" class="text-red-600">Logout</a>
+      <a href="index.html" class="text-red-600 font-medium">Logout</a>
     </div>
   </nav>
 
   <div class="max-w-7xl mx-auto px-6 py-8">
-    <h2 class="text-2xl font-bold mb-6">Recent Applications</h2>
+    <h2 class="text-2xl font-bold mb-6">All Loan Applications</h2>
     <div id="applicationsList" class="bg-white rounded-3xl shadow overflow-hidden"></div>
   </div>
 
   <script>
-    function loadApplications() {
-      const apps = JSON.parse(localStorage.getItem('applications')) || [];
+    const supabaseUrl = 'https://woimqhzsxyfwqtstomez.supabase.co/rest/v1/';   // ← Same as apply.html
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvaW1xaHpzeHlmd3F0c3RvbWV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MzMwMjUsImV4cCI6MjA5NDIwOTAyNX0.iMhEYmOsIkpNeDhS4q1NpgdQT-xm4ZUz2Ibd8R3yVHU';                 // ← Same as apply.html
+
+    const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
+
+    async function loadApplications() {
+      const { data, error } = await supabase
+        .from('loan_applications')
+        .select('*')
+        .order('created_at', { ascending: false });
+
       let html = `<table class="w-full"><thead class="bg-gray-50"><tr>
         <th class="p-4 text-left">Name</th>
+        <th class="p-4 text-left">ID No.</th>
         <th class="p-4 text-left">Amount</th>
         <th class="p-4 text-left">Date</th>
         <th class="p-4 text-left">Status</th>
       </tr></thead><tbody>`;
 
-      apps.forEach(app => {
-        html += `<tr class="border-t">
-          <td class="p-4">${app.fullName}</td>
-          <td class="p-4">BWP ${app.amount}</td>
-          <td class="p-4">${app.date}</td>
-          <td class="p-4"><span class="px-3 py-1 rounded-full text-sm ${app.status === 'Pending' ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-600'}">${app.status}</span></td>
-        </tr>`;
-      });
+      if (data && data.length > 0) {
+        data.forEach(app => {
+          html += `<tr class="border-t hover:bg-gray-50">
+            <td class="p-4">${app.full_name}</td>
+            <td class="p-4">${app.id_number}</td>
+            <td class="p-4 font-medium">BWP ${app.amount}</td>
+            <td class="p-4">${new Date(app.created_at).toLocaleDateString()}</td>
+            <td class="p-4"><span class="px-4 py-1 rounded-full text-sm ${app.status === 'Pending' ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'}">${app.status}</span></td>
+          </tr>`;
+        });
+      } else {
+        html += `<tr><td colspan="5" class="p-8 text-center text-gray-500">No applications yet</td></tr>`;
+      }
+
       html += `</tbody></table>`;
       document.getElementById('applicationsList').innerHTML = html;
     }
+
     loadApplications();
   </script>
 </body>
