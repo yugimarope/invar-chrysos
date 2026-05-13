@@ -30,12 +30,14 @@
       <div class="mt-6"><label class="block mb-1 font-medium">Loan Amount (BWP)</label><input type="number" id="amount" class="w-full border rounded-xl p-4" required></div>
       <div class="mt-6"><label class="block mb-1 font-medium">Purpose of Loan</label><textarea id="purpose" class="w-full border rounded-xl p-4 h-32" required></textarea></div>
 
-      <!-- Terms Checkbox -->
-      <div class="mt-8 flex items-start gap-3 bg-amber-50 p-5 rounded-2xl">
+      <button type="button" onclick="showAgreementModal()" 
+              class="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl">
+        Read Loan Agreement
+      </button>
+
+      <div class="mt-6 flex items-start gap-3">
         <input type="checkbox" id="terms" class="mt-1 w-5 h-5">
-        <label for="terms" class="text-sm">
-          I have read and agree to the <a href="agreement.html" target="_blank" class="text-amber-600 underline">Loan Agreement</a> and all terms.
-        </label>
+        <label for="terms" class="text-sm">I agree to the Loan Agreement and all terms</label>
       </div>
 
       <button type="submit" id="submitBtn" disabled
@@ -45,17 +47,24 @@
     </form>
   </div>
 
-  <!-- Success Modal -->
-  <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-3xl shadow-2xl p-10 max-w-md text-center">
-      <h1 class="text-6xl mb-6">✅</h1>
-      <h2 class="text-4xl font-bold mb-4">Application Submitted!</h2>
-      <p class="text-xl text-gray-600 mb-6">Thank you! We will review your application soon.</p>
-      <p class="font-mono text-3xl text-amber-600 mb-8" id="refNumber">INV-123456</p>
-      <button onclick="closeModal()" 
-              class="bg-amber-600 text-white px-10 py-4 rounded-2xl font-semibold text-lg">
-        Return to Home
-      </button>
+  <!-- Loan Agreement Modal -->
+  <div id="agreementModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden">
+      <div class="p-6 border-b flex justify-between items-center">
+        <h2 class="text-2xl font-bold">Loan Agreement - Invar Chrysos</h2>
+        <button onclick="hideAgreementModal()" class="text-3xl">×</button>
+      </div>
+      <div class="p-8 overflow-y-auto max-h-[70vh] prose">
+        <!-- Paste your full Loan Agreement text here -->
+        <p><strong>Between Invar Chrysos (the Lender) and the Borrower</strong></p>
+        <!-- ... paste the rest of your agreement content ... -->
+      </div>
+      <div class="p-6 border-t">
+        <button onclick="hideAgreementModal()" 
+                class="w-full bg-amber-600 text-white py-4 rounded-2xl font-semibold">
+          I Have Read and Understood the Agreement
+        </button>
+      </div>
     </div>
   </div>
 
@@ -65,11 +74,20 @@
 
     const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Enable submit button when terms accepted
+    // Enable submit when checkbox is checked
     document.getElementById('terms').addEventListener('change', function() {
       document.getElementById('submitBtn').disabled = !this.checked;
     });
 
+    function showAgreementModal() {
+      document.getElementById('agreementModal').classList.remove('hidden');
+    }
+
+    function hideAgreementModal() {
+      document.getElementById('agreementModal').classList.add('hidden');
+    }
+
+    // Form Submission
     document.getElementById('loanForm').addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -86,17 +104,10 @@
       if (error) {
         alert("Error: " + error.message);
       } else {
-        const ref = "INV-" + Math.floor(100000 + Math.random() * 900000);
-        document.getElementById('refNumber').textContent = ref;
-        document.getElementById('successModal').classList.remove('hidden');
+        alert("✅ Application Submitted Successfully!");
+        window.location.href = "confirmation.html";
       }
     });
-
-    function closeModal() {
-      document.getElementById('successModal').classList.add('hidden');
-      document.getElementById('loanForm').reset();
-      window.location.href = "index.html";
-    }
   </script>
 </body>
 </html>
